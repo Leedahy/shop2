@@ -18,4 +18,10 @@ public class Cart extends BaseEntity {
   @OneToOne(fetch = FetchType.LAZY) //일대일관계 //지연 로딩 설정
   @JoinColumn(name = "member_id")
   private Member member;
+
+  public static Cart createCart(Member member) {
+    Cart cart = new Cart();
+    cart.setMember(member);
+    return cart;
+  }
 }

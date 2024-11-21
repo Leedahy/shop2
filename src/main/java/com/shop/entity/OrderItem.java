@@ -31,4 +31,23 @@ public class OrderItem extends BaseEntity{
 //  private LocalDateTime regTime;  BaseEntity 상속 받으며 삭제
 
 //  private LocalDateTime updateTime; BaseEntity 상속 받으며 삭제
+
+  public static OrderItem createOrderItem(Item item, int count) {
+    OrderItem orderItem = new OrderItem();
+    orderItem.setItem(item);
+    orderItem.setCount(count);
+    orderItem.setOrderPrice(item.getPrice());
+
+    item.removeStock(count);
+    return orderItem;
+  }
+
+  public int getTotalPrice() {
+    return orderPrice*count;
+  }
+
+  //주문 취소 시 그만큼 재고 증가
+  public void cancel() {
+    this.getItem().addStock(count);
+  }
 }

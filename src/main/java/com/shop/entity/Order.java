@@ -36,4 +36,39 @@ public class Order extends BaseEntity {
 //  private LocalDateTime regTime;
 
 //  private LocalDateTime updateTime;
+
+  public void addOrderItem(OrderItem orderItem) {
+    orderItems.add(orderItem); //주문상품 정보들(orderItem)을 담음
+    orderItem.setOrder(this); //orderItem 객체를 order 객체의 orderItems에 추가함
+  }
+
+  public static Order createOrder(Member member, List<OrderItem> orderItemList) {
+    Order order = new Order();
+    order.setMember(member);
+    for (OrderItem orderItem : orderItemList) {
+      order.addOrderItem(orderItem);
+    }
+    order.setOrderStatus(OrderStatus.ORDER);
+    order.setOrderDate(LocalDateTime.now());
+    return order;
+  }
+
+  public int getTotalPrice() {
+    int totalPrice = 0;
+
+    for (OrderItem orderItem : orderItems) {
+      totalPrice += orderItem.getTotalPrice();
+    }
+    return totalPrice;
+  }
+
+  public void cancelOrder() {
+    this.orderStatus = OrderStatus.CANCEL;
+
+    for(OrderItem orderItem : orderItems) {
+      orderItem.cancel();
+    }
+  }
+
+
 }
